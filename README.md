@@ -9,11 +9,16 @@ ________________________________________________________________________
 
 Proposed Schedule (On a weekly basis):
 Week 1: Develop Front-end parser that can take in compiled CUDA code
+
 Week 2: Built up a basic front-end
+
 Week 3: Develop Scheduler and start on the execution model of a single-core
+
 Week 4: Develop L1 caches and refill/miss/hit flows (this requires going back to the front-end)
+
 Week 5: Draft a rough L2/GPU Device Memory model that takes a lot of characteristics of our L1 cache model to provide an inaccurate yet complete memory subsystem.
 
+------------------------------------------------------------------------
 Project Schedule (On a bi-weekly basis):
 Week 1.0: Explored the NVidia Cuda compiler flow with NVCC. We primarily focused this half of the week in taking a look at the CUDA binary utilities that exist for Nvidia's developer community. The focus revolved around cuobjdump (operating from x86 environments only).
 
@@ -25,7 +30,7 @@ Week 2.5: Scheduler work presses on, still coding up MInst and AInst classes and
 
 ***Hit a major problem with the front end CUDA code toolchain support we're trying to develop: nvcc takes in .cudin files and wraps them into fatbinaries. Fatbinaries are later linked to the original .cpp source code of the base with nvlink to combine into the fatbinary. How do we get past or ignore the nvlink stage? We can potentially stay near .cudin files but then we won't be able to scheduler the cuda code... meaning the simulator won't actually execute it unless we come with a hack.***
 
-Week 3.0 (Current week... Checkpoing Update): Scheduler work is on hold and the entire team is on the front end problem. This changes the scope of GSim, maybe GSim approaches this in a hacky way? Have the user manually give options to scheduling out kernels (so we don't need the source code of this)?
+Week 3.0 (Current week... Checkpoing Update): Scheduler work is on hold and the entire team is on the front end problem. This changes the scope of GSim, maybe GSim approaches this in a hacky way? Have the user manually give options to scheduling out kernels (so we don't need the source code of this)? ***The current design plan is to have our front-end be a wrapper around nvbit (because it does most of the work we’re trying to do from scratch).***
 
 ***PLANNED WORK***
 Week 3.5: Integrate NVBit and SASSI to have GSIM "replace" its front end with options that will call different dynamic instrumentation tools integrated with these PINs. Then, it will produce traces that we wrap into a tasteful mix of MInst and AInst instruction packets we have existing. We then input them to our scheduler. This way, our simulator is a weird mix of a functional trace-driven simulator with cycle-approximate models. To clarify, our simulator will now generate its own trace files by taking in normal .cu code files and giving it into NVBit (for example) which will output certain instrution information to use as our front-end. We take these packets and then simulate then on our back-end (scheduler and gpu cores) that calculates AI in a cycle-approximate back end model.
